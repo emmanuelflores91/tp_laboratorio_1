@@ -102,7 +102,6 @@ int PedirEnteroEnRango (int* numero, char mensaje[], char mensajeError[], int mi
 	estado = -1;
 	longitud = sizeof(cadena);
 
-
 	do
 	{	printf("%s", mensaje);
 		if(LeerCadena(cadena, longitud) == 0 &&
@@ -115,7 +114,6 @@ int PedirEnteroEnRango (int* numero, char mensaje[], char mensajeError[], int mi
 		}
 		cantidadReintentos--;
 		printf("%s", mensajeError);
-
 
 	}while(cantidadReintentos >=0);
 
