@@ -122,11 +122,13 @@ static int addNode(LinkedList* this, int nodeIndex,void* pElement)
     		{
     			pNodeAux = getNode(this, nodeIndex-1);
 
-    			pNewNode->pNextNode = pNodeAux->pNextNode;
+    			if(pNodeAux != NULL)
+    			{
+    				pNewNode->pNextNode = pNodeAux->pNextNode;
 
-				pNodeAux->pNextNode = pNewNode;
+    				pNodeAux->pNextNode = pNewNode;
+    			}
     		}
-
     		pNewNode->pElement = pElement;
 
     		this->size ++;
@@ -183,13 +185,12 @@ void* ll_get(LinkedList* this, int index)
     void* returnAux = NULL;
     Node* pNode = NULL;
 
-    if (this != NULL && index >= 0 && index < ll_len(this)) //todo está mal la documentación? porque debería ser >= el caso de error
+    if (this != NULL && index >= 0 && index < ll_len(this))
     {
     	pNode = getNode(this, index);
 
-    	//todo es necesario verificar que pNode no sea NULL ??
-
     	returnAux = pNode->pElement;
+
     }
     return returnAux;
 }
@@ -211,7 +212,7 @@ int ll_set(LinkedList* this, int index,void* pElement)
 
     if (this != NULL && index >= 0 && index < ll_len(this))
     {
-    	pNode = getNode(this, index);
+    	pNode = getNode(this, index); // validar nodo distinto de NULL
 
     	pNode->pElement = pElement;
 
@@ -230,7 +231,7 @@ int ll_set(LinkedList* this, int index,void* pElement)
                         ( 0) Si funciono correctamente
  *
  */
-int ll_remove(LinkedList* this,int index)// todo borro el nodo o solo el puntero al elemento ?
+int ll_remove(LinkedList* this,int index)
 {
     int returnAux = -1;
     Node* pNode1 = NULL;
@@ -238,7 +239,7 @@ int ll_remove(LinkedList* this,int index)// todo borro el nodo o solo el puntero
 
     if (this != NULL && index >= 0 && index < ll_len(this))
     {
-    	pNode1 = getNode(this, index);
+    	pNode1 = getNode(this, index); //validar nodo
 
     	if (index == 0)
     	{
@@ -273,20 +274,12 @@ int ll_remove(LinkedList* this,int index)// todo borro el nodo o solo el puntero
 int ll_clear(LinkedList* this)
 {
     int returnAux = -1;
-    Node* pNode = NULL;
 
     if (this != NULL && this->pFirstNode != NULL)
     {
     	for(int i = ll_len(this)-1; i >= 0; i--)
     	{
-    		pNode = getNode(this, i);
-
-    		if (pNode != NULL)
-    		{
-    			free(pNode);
-
-    			this->size--;
-    		}
+    		ll_remove(this, i);
     	}
     	returnAux = 0;
     }
@@ -324,7 +317,7 @@ int ll_deleteLinkedList(LinkedList* this)
                         (indice del elemento) Si funciono correctamente
  *
  */
-int ll_indexOf(LinkedList* this, void* pElement)//todo validar el pElement != NULL ? si o no?
+int ll_indexOf(LinkedList* this, void* pElement)
 {
     int returnAux = -1;
     Node* pNode = NULL;
@@ -382,7 +375,8 @@ int ll_push(LinkedList* this, int index, void* pElement)
 {
     int returnAux = -1;
 
-    if(this != NULL)
+    if(this != NULL && index >= 0 && index < ll_len(this))
+
     {
     	returnAux = addNode(this, index, pElement);
     }
@@ -487,7 +481,7 @@ LinkedList* ll_subList(LinkedList* this,int from,int to)
     LinkedList* cloneArray = NULL;
     void* pElement = NULL;
 
-    if (this != NULL && from >= 0 && from < ll_len(this) && to > from && to <= ll_len(this) )
+    if (this != NULL && from >= 0 && from <= ll_len(this) && to > from && to <= ll_len(this) )
     {
     	cloneArray = ll_newLinkedList();
 
@@ -537,9 +531,28 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 {
     int returnAux =-1;
 
-    if (this != NULL)
-    {
+    void* pElement1 = NULL;
 
+    void* pElement2 = NULL;
+
+    if (this != NULL && pFunc != NULL && (order == 0 || order == 1))
+    {
+    	for(int i = 0; i<ll_len(this)-1; i++)
+    	{
+    		for(int j = i+1; j<ll_len(this); j++)
+    		{
+    			pElement1 = ll_get(this, i);
+    			pElement2 = ll_get(this, j);
+
+    			if((pFunc(pElement1,pElement2)==1 && order == 1)||(pFunc(pElement1,pElement2)==-1 && order == 0))
+    			{
+    				ll_set(this, j, pElement1);
+    				ll_set(this, i, pElement2);
+
+    				returnAux = 0;
+    			}
+    		}
+    	}
     }
 
     return returnAux;
