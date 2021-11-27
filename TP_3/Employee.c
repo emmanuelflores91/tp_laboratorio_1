@@ -161,12 +161,14 @@ int printOneEmployee (Employee* empleado)
 	int horasTrabajadas;
 	int sueldo;
 
-	if (employee_getId(empleado, &id) == 0 &&
+	if (empleado != NULL &&
+		employee_getId(empleado, &id) == 0 &&
 		employee_getNombre(empleado, nombre) == 0 &&
 		employee_getHorasTrabajadas(empleado, &horasTrabajadas) == 0 &&
 		employee_getSueldo(empleado, &sueldo) == 0)
 	{
 		printf("\n %-8d %-20s %-8d    $ %d",id, nombre, horasTrabajadas, sueldo);
+		estado = 0;
 	}
 
 	return estado;
@@ -185,8 +187,8 @@ int HourCompare (void* empleadoA, void* empleadoB)
 {
 	int estado;
 	estado = 0;
-	Employee* empleado1;
-	Employee* empleado2;
+	Employee* empleado1 = NULL;
+	Employee* empleado2 = NULL;
 	int horas1;
 	int horas2;
 
@@ -216,8 +218,8 @@ int SalaryCompare (void* empleadoA, void* empleadoB)
 {
 	int estado;
 	estado = 0;
-	Employee* empleado1;
-	Employee* empleado2;
+	Employee* empleado1 = NULL;
+	Employee* empleado2 = NULL;
 	int sueldo1;
 	int sueldo2;
 
@@ -247,11 +249,10 @@ int IdCompare (void* empleadoA, void* empleadoB)
 {
 	int estado;
 	estado = 0;
-	Employee* empleado1;
-	Employee* empleado2;
+	Employee* empleado1 = NULL;
+	Employee* empleado2 = NULL;
 	int id1;
 	int id2;
-
 
 	empleado1 = (Employee*) empleadoA;
 
@@ -278,8 +279,8 @@ int NameCompare (void* empleadoA, void* empleadoB)
 {
 	int estado;
 	estado = 0;
-	Employee* empleado1;
-	Employee* empleado2;
+	Employee* empleado1 = NULL;
+	Employee* empleado2 = NULL;
 	char name1[128];
 	char name2[128];
 
@@ -296,7 +297,7 @@ int NameCompare (void* empleadoA, void* empleadoB)
 	return estado;
 }
 
-int PedirDatosEmpleados (char nombre[], int tamNOmbre, char horas[], char sueldo[])
+int PedirDatosEmpleados (char nombre[], int tamNombre, char horas[], char sueldo[])
 {
 	int estado;
 	estado = -1;
@@ -304,7 +305,7 @@ int PedirDatosEmpleados (char nombre[], int tamNOmbre, char horas[], char sueldo
 	int horasInt = 0;
 	int sueldoInt = 0;
 
-	if (PedirCadena("\n Ingrese el nombre (maximo 128 caracteres): ", "\n Datos erroneos.", nombre, tamNOmbre, 2) == 0 &&
+	if (PedirNombre("\n Ingrese el nombre (maximo 128 caracteres): ", "\n Datos erroneos.", nombre, tamNombre, 2) == 0 &&
 
 		PedirEnteroEnRango(&horasInt, "\n Ingrese la cantidad horas (entre 0 y 300 hs): ", "\n Datos erroneos.", 0, 300, 2) == 0 &&
 
@@ -320,7 +321,28 @@ int PedirDatosEmpleados (char nombre[], int tamNOmbre, char horas[], char sueldo
 	return estado;
 }
 
+int PedirNombre (char* mensaje, char* mensajeError, char* cadena, int longitud, int reintentos)
+{
+	int estado;
+	estado = -1;
 
+	do
+	{
+		if (PedirCadena(mensaje, mensajeError, cadena, longitud, reintentos) == 0 &&
+			ComprobarSiEsNombre(cadena)==1)
+		{
+			estado = 0;
+			break;
+		}
+
+		printf("%s", mensajeError);
+		reintentos--;
+
+	} while (reintentos >=0);
+
+	return estado;
+
+}
 
 
 

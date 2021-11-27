@@ -133,7 +133,6 @@ int main()
                 	else
                 	{
     					printf("\n Error en ordenamiento.");
-
                 	}
 				}
 				else

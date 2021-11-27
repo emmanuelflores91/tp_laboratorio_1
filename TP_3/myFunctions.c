@@ -102,6 +102,7 @@ int PedirEnteroEnRango (int* numero, char mensaje[], char mensajeError[], int mi
 	estado = -1;
 	longitud = sizeof(cadena);
 
+
 	do
 	{	printf("%s", mensaje);
 		if(LeerCadena(cadena, longitud) == 0 &&
@@ -114,6 +115,7 @@ int PedirEnteroEnRango (int* numero, char mensaje[], char mensajeError[], int mi
 		}
 		cantidadReintentos--;
 		printf("%s", mensajeError);
+
 
 	}while(cantidadReintentos >=0);
 
@@ -420,6 +422,34 @@ int ComprobarSiEsFlotante (char datoIngresado[])
 	 return esEntero;
  }
 
+ int ComprobarSiEsNombre (char datoIngresado[])
+ {
+	 int esNombre;
+	 int longitud;
+
+	 esNombre = 1;
+	 longitud = strlen(datoIngresado);
+
+	 if (isalpha(datoIngresado[0]) == 0|| isspace(datoIngresado[0]) || datoIngresado[0]== '\n' || isspace(datoIngresado[longitud-1]))
+	{
+		 esNombre = 0;
+	}
+	else
+	{
+		 for(int i = 1; i < longitud; i++)
+		 {
+			 if((isspace(datoIngresado[i]) && isspace(datoIngresado[i+1])) ||
+				(isalpha(datoIngresado[i]) == 0 && isspace(datoIngresado[i])== 0))
+			 {
+				 esNombre = 0;
+				 break;
+			 }
+		 }
+	}
+
+
+	 return esNombre;
+ }
 
 
 void ImprimirFlotante (char mensaje [], float flotanteParaImprimir)

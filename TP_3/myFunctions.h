@@ -134,13 +134,20 @@ int DistinguirEnteroDeFlotante (float numeroIngresado);
 
 /// @brief verifica que un numero sea un entero válido.
 /// @param datoIngresado = el número ingresado.
-/// @return = -1 en caso de error, 0 si se pudo realizar.
+/// @return = 1 en caso verdadero, 0 si es falso.
 int ComprobarSiEsEntero (char datoIngresado[]);
 
 /// @brief verifica que un numero sea un decimal válido.
 /// @param datoIngresado = el número ingresado.
-/// @return = -1 en caso de error, 0 si se pudo realizar.
+/// @return = 1 en caso verdadero, 0 si es falso.
 int ComprobarSiEsFlotante (char datoIngresado[]);
+
+/// @brief Verifica que el nombre ingresado no contenga caracteres especiales, números, sólo espacios o sólo enters
+///
+/// @param datoIngresado = el nombre ingresado
+/// @return = 1 en caso verdadero, 0 si es falso.
+int ComprobarSiEsNombre (char datoIngresado[]);
+
 
 /// @brief = Realiza la suma de dos numeros y retorna el resultado.
 /// @param A = El primer numero ingresado.

@@ -51,7 +51,6 @@ int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
 int parser_EmployeeFromBinary(FILE* pFile , LinkedList* pArrayListEmployee)
 {
 	int estado;
-	int contadorCargas;
 	estado = -1;
 	Employee* pEmpleado;
 
